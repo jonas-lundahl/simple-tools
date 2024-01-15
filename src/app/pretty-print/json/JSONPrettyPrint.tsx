@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { safeParseJSON } from "@/app/pretty-print/parse";
+import { safeParseJSON } from "@/app/pretty-print/json/json-parse";
 import { PrettyPrint } from "@/app/pretty-print/PrettyPrint";
 
 export default function JSONPrettyPrint() {

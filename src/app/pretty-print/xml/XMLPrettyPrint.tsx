@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
-import { safeParseJSON } from "@/app/pretty-print/parse";
 import { PrettyPrint } from "@/app/pretty-print/PrettyPrint";
+import { prettyPrintXML, safeParseXML } from "@/app/pretty-print/xml/xml-parse";
 
 export default function XMLPrettyPrint() {
   const [value, setValue] = useState("");
-  const result = safeParseJSON(value);
+  const result = safeParseXML(value);
 
   let prettifiedXML;
   if (result.success) {
-    prettifiedXML = JSON.stringify(result.content, null, 2);
+    prettifiedXML = prettyPrintXML(result.content);
   } else {
     prettifiedXML = "";
   }
