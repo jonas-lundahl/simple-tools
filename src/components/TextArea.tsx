@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import { ClipboardCopyIcon, TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
+import { BasicTooltip } from "@/components/BasicTooltip";
 
 type Props = {
   title: string;
@@ -29,24 +30,28 @@ export const TextArea: FC<Props> = ({
           {title}
         </h2>
         {enableCopyButton && (
-          <Button
-            disabled={value === ""}
-            variant="outline"
-            size="icon"
-            onClick={() => copyToClipboard(value)}
-          >
-            <ClipboardCopyIcon className="h-[1.2rem] w-[1.2rem]" />
-          </Button>
+          <BasicTooltip label="Copy to clipboard">
+            <Button
+              disabled={value === ""}
+              variant="outline"
+              size="icon"
+              onClick={() => copyToClipboard(value)}
+            >
+              <ClipboardCopyIcon className="h-[1.2rem] w-[1.2rem]" />
+            </Button>
+          </BasicTooltip>
         )}
         {enableClearButton && (
-          <Button
-            disabled={value === ""}
-            variant="outline"
-            size="icon"
-            onClick={() => setValue?.("")}
-          >
-            <TrashIcon className="h-[1.2rem] w-[1.2rem]" />
-          </Button>
+          <BasicTooltip label="Clear input">
+            <Button
+              disabled={value === ""}
+              variant="outline"
+              size="icon"
+              onClick={() => setValue?.("")}
+            >
+              <TrashIcon className="h-[1.2rem] w-[1.2rem]" />
+            </Button>
+          </BasicTooltip>
         )}
       </div>
       <textarea
