@@ -1,8 +1,8 @@
-type ParseResult<T> = SuccessResult<T> | FailureResult;
+type ParseResult = SuccessResult | FailureResult;
 
-type SuccessResult<T> = {
+type SuccessResult = {
   success: true;
-  content: T;
+  content: object;
 };
 
 type FailureResult = {
@@ -10,7 +10,7 @@ type FailureResult = {
   error: string;
 };
 
-export function safeParseJSON(str: string): ParseResult<object> {
+export function safeParseJSON(str: string): ParseResult {
   try {
     const json = JSON.parse(str);
     return {
