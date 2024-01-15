@@ -1,9 +1,7 @@
 "use client";
-import { TextArea } from "@/components/TextArea";
 import { useState } from "react";
 import { safeParseJSON } from "@/app/pretty-print/parse";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { PrettyPrint } from "@/app/pretty-print/PrettyPrint";
 
 export default function JSONPage() {
   const [value, setValue] = useState("");
@@ -17,28 +15,12 @@ export default function JSONPage() {
   }
 
   return (
-    <>
-      <section className="flex gap-4 flex-grow overflow-hidden">
-        <TextArea
-          title="Input"
-          enableClearButton
-          value={value}
-          setValue={setValue}
-        />
-        <TextArea
-          title="Output"
-          disabled
-          enableCopyButton
-          value={prettifiedJSON}
-        />
-      </section>
-      {value !== "" && !result.success && (
-        <Alert variant="destructive">
-          <ExclamationTriangleIcon className="h-4 w-4" />
-          <AlertTitle>An error occurred</AlertTitle>
-          <AlertDescription>{result.error}</AlertDescription>
-        </Alert>
-      )}
-    </>
+    <PrettyPrint
+      input={value}
+      setInput={setValue}
+      prettifiedInput={prettifiedJSON}
+      success={result.success}
+      error={result.success ? "" : result.error}
+    />
   );
 }
