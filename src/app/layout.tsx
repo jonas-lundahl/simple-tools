@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Simple Tools",
+  title: process.env.APP_TITLE,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

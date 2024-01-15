@@ -1,26 +1,10 @@
-"use client";
-import { useState } from "react";
-import { safeParseJSON } from "@/app/pretty-print/parse";
-import { PrettyPrint } from "@/app/pretty-print/PrettyPrint";
+import { Metadata } from "next";
+import JSONPrettyPrint from "@/app/pretty-print/json/JSONPrettyPrint";
+
+export const metadata: Metadata = {
+  title: `${process.env.APP_TITLE} | JSON Pretty Print`,
+};
 
 export default function JSONPage() {
-  const [value, setValue] = useState("");
-  const result = safeParseJSON(value);
-
-  let prettifiedJSON;
-  if (result.success) {
-    prettifiedJSON = JSON.stringify(result.content, null, 2);
-  } else {
-    prettifiedJSON = "";
-  }
-
-  return (
-    <PrettyPrint
-      input={value}
-      setInput={setValue}
-      prettifiedInput={prettifiedJSON}
-      success={result.success}
-      error={result.success ? "" : result.error}
-    />
-  );
+  return <JSONPrettyPrint />;
 }
