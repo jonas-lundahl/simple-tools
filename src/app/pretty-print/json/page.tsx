@@ -19,8 +19,18 @@ export default function JSONPage() {
   return (
     <>
       <section className="flex gap-4 flex-grow overflow-hidden">
-        <TextArea title="Input" value={value} onChange={setValue} />
-        <TextArea title="Output" enableCopyButton value={prettifiedJSON} />
+        <TextArea
+          title="Input"
+          enableClearButton
+          value={value}
+          setValue={setValue}
+        />
+        <TextArea
+          title="Output"
+          disabled
+          enableCopyButton
+          value={prettifiedJSON}
+        />
       </section>
       {value !== "" && !result.success && (
         <Alert variant="destructive">
