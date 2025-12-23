@@ -1,18 +1,15 @@
 import Editor from "~/components/editor";
-import { cookies } from "next/headers";
+import { Metadata } from "next";
+import { getDefaultPanelLayoutFromCookies } from "~/lib/server/react-resizable-panels";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "JSON Formatter",
   description: "Format JSON and make it prettier",
 };
 
 export default async function JsonPage() {
-  const layout = (await cookies()).get("react-resizable-panels:layout");
-
-  let defaultLayout;
-  if (layout) {
-    defaultLayout = JSON.parse(layout.value);
-  }
+  const groupId = "json-formatter";
+  const defaultLayout = await getDefaultPanelLayoutFromCookies(groupId);
 
   return (
     <Editor
@@ -20,6 +17,7 @@ export default async function JsonPage() {
       placeholderText="Formatted JSON will appear here"
       variant="json"
       defaultLayout={defaultLayout}
+      groupId={groupId}
     />
   );
 }

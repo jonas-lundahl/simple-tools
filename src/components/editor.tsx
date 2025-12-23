@@ -17,6 +17,8 @@ import TextTooltip from "~/components/text-tooltip";
 import { prettifyJson } from "~/lib/prettify.json";
 import { prettifyXML } from "~/lib/prettify.xml";
 import { useAreaHeight } from "~/lib/useAreaHeight";
+import { type Layout } from "react-resizable-panels";
+import { onLayoutChange } from "~/lib/client/react-resizable-panels";
 
 const TextContext = createContext("");
 const SetTextContext = createContext<(text: string) => void>(() => {});
@@ -30,15 +32,12 @@ type Props = {
   title: string;
   placeholderText: string;
   variant: "xml" | "json";
-  defaultLayout?: number[];
+  defaultLayout: Layout | undefined;
+  groupId: string;
 };
 
 export default function Editor(props: Props) {
-  const { title, placeholderText, variant, defaultLayout = [50, 50] } = props;
-
-  const onLayout = (sizes: number[]) => {
-    document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
-  };
+  const { title, placeholderText, variant, defaultLayout, groupId } = props;
 
   const prettyFn = variant === "xml" ? prettifyXML : prettifyJson;
 
@@ -55,7 +54,7 @@ export default function Editor(props: Props) {
           <WrapContext.Provider value={wrap}>
             <SetWrapContext.Provider value={setWrap}>
               <div className="flex h-full flex-col">
-                <div className="flex flex-shrink-0 flex-row items-center gap-2 border border-b-0 px-2 py-1">
+                <div className="flex shrink-0 flex-row items-center gap-2 border border-b-0 px-2 py-1">
                   <h1 className="text-3xl font-semibold tracking-tight">
                     {title}
                   </h1>
@@ -96,22 +95,15 @@ export default function Editor(props: Props) {
                 <div className="flex-1" style={style}>
                   <ResizablePanelGroup
                     className="gap-2"
-                    direction="horizontal"
-                    onLayout={onLayout}
+                    orientation="horizontal"
+                    defaultLayout={defaultLayout}
+                    onLayoutChange={onLayoutChange(groupId)}
                   >
-                    <ResizablePanel
-                      minSize={30}
-                      defaultSize={defaultLayout[0]}
-                      order={1}
-                    >
+                    <ResizablePanel id="left" minSize="30%">
                       <TextEditor />
                     </ResizablePanel>
                     <ResizableHandle withHandle />
-                    <ResizablePanel
-                      minSize={30}
-                      defaultSize={defaultLayout[1]}
-                      order={2}
-                    >
+                    <ResizablePanel id="right" minSize="30%">
                       <TextPreview prettified={prettified} error={error} />
                     </ResizablePanel>
                   </ResizablePanelGroup>
@@ -161,7 +153,7 @@ function TextPreview(props: TextPreviewProps) {
         error ? "font-mono whitespace-normal" : "",
         prettified && !error && "font-mono",
         wrap && prettified && !error
-          ? "break-words whitespace-pre-wrap"
+          ? "wrap-break-word whitespace-pre-wrap"
           : !error && "whitespace-pre",
       )}
       style={{
