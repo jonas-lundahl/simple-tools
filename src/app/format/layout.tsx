@@ -8,7 +8,7 @@ export default function FormatLayout(props: PropsWithChildren) {
   const { children } = props;
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden">
-      <header className="bg-muted flex h-12 flex-shrink-0 flex-row">
+      <header className="bg-muted flex h-12 shrink-0 flex-row">
         <SquareButton asChild>
           <NavLink
             href="/format/json"
