@@ -1,38 +1,22 @@
 import { useRouter } from "@tanstack/react-router";
-import { createContext, use, useState } from "react";
+import { createContext, use } from "react";
 import type { PropsWithChildren } from "react";
 import { setThemeServerFn } from "@/lib/theme";
 import type { T as Theme } from "@/lib/theme";
-import * as Sentry from "@sentry/react";
 
 type ThemeContextVal = { theme: Theme; setTheme: (val: Theme) => void };
 type Props = PropsWithChildren<{ theme: Theme }>;
 
 const ThemeContext = createContext<ThemeContextVal | null>(null);
 
-export function ThemeProvider({ children, theme: initialTheme }: Props) {
+export function ThemeProvider({ children, theme }: Props) {
   const router = useRouter();
-  const [theme, setThemeState] = useState(initialTheme);
 
-  function setTheme(nextTheme: Theme) {
-    const previousTheme = theme;
-    setThemeState(nextTheme);
-
-    setThemeServerFn({ data: nextTheme })
-      .then(() => {
-        router.invalidate();
-      })
-      .catch((error) => {
-        Sentry.captureException(error);
-        setThemeState(previousTheme);
-      });
+  function setTheme(val: Theme) {
+    setThemeServerFn({ data: val }).then(() => router.invalidate());
   }
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext value={{ theme, setTheme }}>{children}</ThemeContext>;
 }
 
 export function useTheme() {
