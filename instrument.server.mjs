@@ -3,7 +3,9 @@ import * as Sentry from "@sentry/tanstackstart-react";
 const sentryDsn =
   import.meta.env?.VITE_SENTRY_DSN ?? process.env.VITE_SENTRY_DSN;
 
-const environment = import.meta.env.NODE_ENV;
+const environment =
+  (typeof import.meta !== "undefined" && import.meta.env?.NODE_ENV) ||
+  process.env.NODE_ENV;
 
 if (!sentryDsn) {
   console.warn("VITE_SENTRY_DSN is not defined. Sentry is not running.");
